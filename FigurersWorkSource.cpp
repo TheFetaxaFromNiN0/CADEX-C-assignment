@@ -12,10 +12,10 @@ class FigureBase
 {
 public:
 
-	virtual std::vector<double> Point(double t) = 0; // возвращает координаты точки по параметру t
-	virtual std::vector<double> firstDerivative(double t) = 0; // возвращает первую производную  по параметру t(вектор)
-	virtual int Flag() = 0;
-	virtual double get_Radius() = 0; // возвращает радис (для Ellepses, радиус большей полуоси)
+	virtual std::vector<double> Point(double t) = 0; // coordinati parametra t
+	virtual std::vector<double> firstDerivative(double t) = 0; // coordinati vectora proizvodnoy
+	virtual int Flag() = 0; //flag fihuri
+	virtual double get_Radius() = 0; // raduis figuri
 
 };
 
@@ -171,11 +171,10 @@ public:
 };
 
 
-std::vector<std::shared_ptr <FigureBase>> randomFigure(std::vector<std::shared_ptr <FigureBase>>); // заполняет случайным образом контейеекр объектами
-std::vector<std::shared_ptr <FigureBase>>  chooseCircles(std::vector<std::shared_ptr <FigureBase>>); // заполняет контейнер окружностями из первого контейнера
-bool comparator(std::shared_ptr <FigureBase> a, std::shared_ptr <FigureBase> b); // функция для сортировки(используется в функции sort из STL)
-double get_SumRadius(std::vector<std::shared_ptr <FigureBase>>); // возращает сумму радиуса для окружности из 2го контейнера
-void ShowCordinate(std::vector<double>);
+std::vector<std::shared_ptr <FigureBase>> randomFigure(std::vector<std::shared_ptr <FigureBase>>); // zapolnenia figurami
+std::vector<std::shared_ptr <FigureBase>>  chooseCircles(std::vector<std::shared_ptr <FigureBase>>); // zapolnenia krugov
+bool comparator(std::shared_ptr <FigureBase> a, std::shared_ptr <FigureBase> b); 
+double get_SumRadius(std::vector<std::shared_ptr <FigureBase>>); 
 
 
 int main()
@@ -183,8 +182,8 @@ int main()
 
 	double sum = 0;
 	double t;
-	std::vector<std::shared_ptr <FigureBase>> vec; // контейнер для всех фигур
-	std::vector<std::shared_ptr <FigureBase>>  vecCircles;// контейнер только для окружностей
+	std::vector<std::shared_ptr <FigureBase>> vec; // dlya vseh figur
+	std::vector<std::shared_ptr <FigureBase>>  vecCircles;// dlya krugov
 	vec = randomFigure(vec);
 	printf("Coordinates:\n");
 	for (std::shared_ptr <FigureBase> v : vec)
@@ -220,7 +219,7 @@ int main()
 
 std::vector<std::shared_ptr <FigureBase>> randomFigure(std::vector<std::shared_ptr <FigureBase>> v)
 {
-	// Путь создаётся 10 объектов 3х классов случайным образом
+	// 10 objectov 3h classov
 	std::vector<int> mask(10);
 	for (int i = 0; i < 10; i++)
 	{
