@@ -6,39 +6,35 @@
 #include "Ellipses.h"
 #include "FigureBase.h"
 #include <algorithm>
+#include <memory>
 
 class FigureBase
 {
 public:
 
-	virtual std::vector<double> Point() = 0; // возвращает координаты точки по параметру t
-	virtual std::vector<double> firstDerivative() = 0; // возвращает первую производную  по параметру t(вектор)
-	virtual void ShowCoord() = 0; // показывает координаты точек по данному параметру t
-	virtual void ShowDerivative() = 0; // показывает координаты вектора по данному параметру t
-	virtual int Flag() = 0; // возвращает флаг, для пометки объекта класса для его определения (является он либо Circles,либо Helixes,либо Ellipses)
+	virtual std::vector<double> Point(double t) = 0; // возвращает координаты точки по параметру t
+	virtual std::vector<double> firstDerivative(double t) = 0; // возвращает первую производную  по параметру t(вектор)
+	virtual int Flag() = 0;
 	virtual double get_Radius() = 0; // возвращает радис (для Ellepses, радиус большей полуоси)
 
 };
+
 
 class Сircles :
 	public FigureBase
 {
 private:
 	double radius;
-	std::vector<double> coordinate;
-	std::vector<double> vec;
-	double t;
 
 public:
-	int flag;
-	Сircles(int f)
+	Сircles()
 	{
 		radius = (double)((rand() % 100 + 1));
-		t = (double)(rand() % 628 / 100);
-		flag = f;
+
 	};
-	std::vector<double> Point() override
+	virtual std::vector<double> Point(double t) override
 	{
+		std::vector<double> coordinate;
 		double x = radius * cos(t);
 		coordinate.push_back(x);
 		double y = radius * sin(t);
@@ -49,8 +45,9 @@ public:
 
 	}
 
-	virtual std::vector<double> firstDerivative() override
+	virtual std::vector<double> firstDerivative(double t) override
 	{
+		std::vector<double> vec;
 		double x = radius * (-sin(t)); // (r*cost)`=r*(-sint)
 		vec.push_back(x);
 		double y = radius * (cos(t)); // (r*sint)`=r*(cost)
@@ -60,53 +57,31 @@ public:
 		return vec;
 	}
 
-	virtual void ShowCoord() override
-	{
-		for (double c : coordinate)
-		{
-			printf("{%f}", c);
-		}
-		printf("\n");
-	}
 
-	virtual void ShowDerivative() override
-	{
-		for (double c : vec)
-		{
-			printf("{%f}", c);
-		}
-		printf("\n");
-	}
-
-	virtual int Flag() override
-	{
-		return flag;
-	}
 
 	virtual double get_Radius()
 	{
 		return radius;
 	}
-};
 
+	virtual int Flag() override
+	{
+		return 0;
+	}
+};
 class Helixes :
 	public FigureBase
 {
 private:
 	double radius;
-	double t;
-	std::vector<double> coordinate;
-	std::vector<double> vec; //
 public:
-	int flag;
-	Helixes(int f)
+	Helixes()
 	{
 		radius = (double)((rand() % 100 + 1));
-		t = (double)(rand() % 628 / 100);
-		flag = f;
 	}
-	std::vector<double> Point() override
+	virtual std::vector<double> Point(double t) override
 	{
+		std::vector<double> coordinate;
 		double x = radius * cos(t);
 		coordinate.push_back(x);
 		double y = radius * sin(t);
@@ -118,8 +93,9 @@ public:
 	}
 
 
-	virtual std::vector<double> firstDerivative() override
+	virtual std::vector<double> firstDerivative(double t) override
 	{
+		std::vector<double> vec;
 		double x = radius * (-sin(t)); // (r*cost)`=r*(-sint)
 		vec.push_back(x);
 		double y = radius * (cos(t)); // (r*sint)`=r*(cost)
@@ -129,33 +105,19 @@ public:
 		return vec;
 	}
 
-	virtual void ShowCoord() override
-	{
-		for (double c : coordinate)
-		{
-			printf("{%f}", c);
-		}
-		printf("\n");
-	}
 
-	virtual void ShowDerivative() override
-	{
-		for (double c : vec)
-		{
-			printf("{%f}", c);
-		}
-		printf("\n");
-	}
-	virtual int Flag() override
-	{
-		return flag;
-	}
 
 	virtual double get_Radius()
 	{
 		return radius;
 	}
+	virtual int Flag() override
+	{
+		return 2;
+	}
 };
+
+
 
 class Ellipses :
 	public FigureBase
@@ -163,20 +125,16 @@ class Ellipses :
 private:
 	double radiusA;
 	double radiusB;
-	double t;
-	std::vector<double> coordinate; // контейнер для хранение координыт точки
-	std::vector<double> vec; // контейнер для хранение вектора производной
+	std::vector<double> coordinate;
 public:
-	int flag;
-	Ellipses(int f)
+	Ellipses()
 	{
 		radiusA = (double)((rand() % 100 + 2));
 		radiusB = (double)((rand() % 100 + 3));
-		t = (double)(rand() % 628 / 100);
-		flag = f;
 	}
-	std::vector<double> Point() override
+	std::vector<double> Point(double t) override
 	{
+		std::vector<double> coordinate;
 		double x = radiusA * cos(t);
 		coordinate.push_back(x);
 		double y = radiusB * sin(t);
@@ -187,8 +145,9 @@ public:
 
 	}
 
-	virtual std::vector<double> firstDerivative() override
+	virtual std::vector<double> firstDerivative(double t) override
 	{
+		std::vector<double> vec;
 		double x = radiusA * (-sin(t)); // (a*cost)`=a*(-sint)
 		vec.push_back(x);
 		double y = radiusB * (cos(t)); // (b*sint)`=b*(cost)
@@ -198,59 +157,56 @@ public:
 		return vec;
 	}
 
-	virtual void ShowCoord() override
-	{
-		for (double c : coordinate)
-		{
-			printf("{%f}", c);
-		}
-		printf("\n");
 
-	}
-
-	virtual void ShowDerivative() override
-	{
-		for (double c : vec)
-		{
-			printf("{%f}", c);
-		}
-		printf("\n");
-	}
-
-	virtual int Flag() override
-	{
-		return flag;
-	}
 
 	virtual double get_Radius()
 	{
 		return radiusA;
 	}
+
+	virtual int Flag() override
+	{
+		return 1;
+	}
 };
 
-std::vector<FigureBase*> randomFigure(std::vector<FigureBase*>); // заполняет случайным образом контейеекр объектами
-std::vector<FigureBase*> chooseCircles(std::vector<FigureBase*>); // заполняет контейнер окружностями из первого контейнера
-bool comparator(FigureBase* a, FigureBase* b); // функция для сортировки(используется в функции sort из STL)
-double get_SumRadius(std::vector<FigureBase*>); // возращает сумму радиуса для окружности из 2го контейнера
+
+std::vector<std::shared_ptr <FigureBase>> randomFigure(std::vector<std::shared_ptr <FigureBase>>); // заполняет случайным образом контейеекр объектами
+std::vector<std::shared_ptr <FigureBase>>  chooseCircles(std::vector<std::shared_ptr <FigureBase>>); // заполняет контейнер окружностями из первого контейнера
+bool comparator(std::shared_ptr <FigureBase> a, std::shared_ptr <FigureBase> b); // функция для сортировки(используется в функции sort из STL)
+double get_SumRadius(std::vector<std::shared_ptr <FigureBase>>); // возращает сумму радиуса для окружности из 2го контейнера
+void ShowCordinate(std::vector<double>);
 
 
 int main()
 {
 
 	double sum = 0;
-	std::vector<FigureBase*> vec; // контейнер для всех фигур
-	std::vector<FigureBase*> vecCircles; // контейнер только для окружностей
+	double t;
+	std::vector<std::shared_ptr <FigureBase>> vec; // контейнер для всех фигур
+	std::vector<std::shared_ptr <FigureBase>>  vecCircles;// контейнер только для окружностей
 	vec = randomFigure(vec);
+	printf("Coordinates:\n");
+	for (std::shared_ptr <FigureBase> v : vec)
+	{
+		t = (double)(rand() % 628 / 100);
+		printf("t=%f \n", t);
+		ShowCordinate(v->Point(t));
+		printf("-coordinate\n");
+		ShowCordinate(v->firstDerivative(t));
+		printf("-coordinateDerivative");
+		printf("\n");
+	}
 	printf("\n----------------------------\n");
 	vecCircles = chooseCircles(vec);
 	printf("\n----------------------------\n");
-	for (FigureBase* v2 : vecCircles)
+	for (std::shared_ptr <FigureBase> v2 : vecCircles)
 	{
 		printf("rad %f  - not sorted\n", v2->get_Radius());
 	}
 	printf("\n----------------------------\n");
 	std::sort(vecCircles.begin(), vecCircles.end(), comparator);
-	for (FigureBase* v2 : vecCircles)
+	for (std::shared_ptr <FigureBase> v2 : vecCircles)
 	{
 		printf("rad %f -sorted\n", v2->get_Radius());
 	}
@@ -262,7 +218,7 @@ int main()
 }
 
 
-std::vector<FigureBase*> randomFigure(std::vector<FigureBase*> v)
+std::vector<std::shared_ptr <FigureBase>> randomFigure(std::vector<std::shared_ptr <FigureBase>> v)
 {
 	// Путь создаётся 10 объектов 3х классов случайным образом
 	std::vector<int> mask(10);
@@ -281,32 +237,19 @@ std::vector<FigureBase*> randomFigure(std::vector<FigureBase*> v)
 		if (mask[i] == 0)
 		{
 
-			v.emplace_back(new Сircles(0));
+			v.emplace_back(std::make_shared<Сircles>());
 		}
 		if (mask[i] == 1)
 		{
 
-			v.emplace_back(new Ellipses(1));
+			v.emplace_back(std::make_shared<Ellipses>());
 		}
 		if (mask[i] == 2)
 		{
 
-			v.emplace_back(new Helixes(2));
+			v.emplace_back(std::make_shared<Helixes>());
 		}
 
-	}
-	printf("Coordinates :\n");
-
-	for (FigureBase* vec : v)
-	{
-		vec->Point();
-		vec->ShowCoord();
-	}
-	printf("Vectors of derivative  :\n");
-	for (FigureBase* vec : v)
-	{
-		vec->firstDerivative();
-		vec->ShowDerivative();
 	}
 	return v;
 
@@ -314,10 +257,10 @@ std::vector<FigureBase*> randomFigure(std::vector<FigureBase*> v)
 
 
 
-std::vector<FigureBase*> chooseCircles(std::vector<FigureBase*> v)
+std::vector<std::shared_ptr <FigureBase>>  chooseCircles(std::vector<std::shared_ptr <FigureBase>>  v)
 {
-	std::vector<FigureBase*> vec;
-	for (FigureBase* vector : v)
+	std::vector<std::shared_ptr <FigureBase>>  vec;
+	for (std::shared_ptr <FigureBase> vector : v)
 	{
 		if (vector->Flag() == 0)
 		{
@@ -325,28 +268,36 @@ std::vector<FigureBase*> chooseCircles(std::vector<FigureBase*> v)
 		}
 
 	}
-	printf("Coordinates of circles :\n");
-	for (FigureBase* vee : vec)
-	{
-		vee->ShowCoord();
-	}
 	return vec;
 
 }
+void ShowCordinate(std::vector<double> coor)
+{
+	for (double c : coor)
+	{
+		printf("{%f}", c);
+	}
+}
 
-bool comparator(FigureBase* a, FigureBase* b)
+
+
+
+bool comparator(std::shared_ptr <FigureBase> a, std::shared_ptr <FigureBase> b)
 {
 	return (a->get_Radius() < b->get_Radius());
 }
 
-double get_SumRadius(std::vector<FigureBase*> vec)
+double get_SumRadius(std::vector<std::shared_ptr <FigureBase>> vec)
 {
 	double sum = 0;
-	for (FigureBase* v : vec)
+	for (std::shared_ptr <FigureBase> v : vec)
 	{
 		sum = sum + v->get_Radius();
 	}
 	return sum;
 }
+
+
+
 
 
